@@ -4,4 +4,14 @@ version = "0.1.0"
 description = "LBM Extract Demo"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = ["tifffile", "h5py"]
+dependencies = [
+    "tifffile",
+    "h5py",
+    "matplotlib>=3.10.1",
+    "mbo_utilities",
+    "lbm_suite2p_python"
+]
+
+[tool.uv.sources]
+mbo_utilities = { git = "https://github.com/MillerBrainObservatory/mbo_utilities", branch = "master" }
+lbm_suite2p_python = { git = "https://github.com/MillerBrainObservatory/LBM-Suite2p-Python", branch = "master" }
