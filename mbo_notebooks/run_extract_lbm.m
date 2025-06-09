@@ -1,2 +1,2 @@
-data_path = "D:\tests\data\h5\roi2";
+data_path = "D:\tests\data\EXTRACT\roi2";
 runEXTRACT(data_path);
