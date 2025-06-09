@@ -18,20 +18,22 @@ for f = files'
     saveFile = fullfile(saveDir, planeStr + "_outputs.h5");
 
     % ---------- load & preprocess ---------------------------------------
+    cfg = get_defaults([]);
     M = permute(h5read(h5_file, '/mov'), [2 1 3]);   % (X,Y,T)
 
-    % ---------- configure EXTRACT ---------------------------------------
-    cfg = get_defaults([]);
     cfg.avg_cell_radius            = 7;
     cfg.num_partitions_x           = 1;
     cfg.num_partitions_y           = 1;
     cfg.visualize_cellfinding      = 1;
     cfg.hyperparameter_tuning_flag = 1;
-    cfg.max_iter                   = 5;
+    cfg.max_iter                   = 0;
+    cfg.use_gpu                    = 1;
     cfg.cellfind_max_steps         = 500;
-    cfg.cellfind_min_snr           = 0;
+    cfg.cellfind_min_snr           = 2;
     cfg.thresholds.T_min_snr       = 3.5;
-    cfg.thresholds.T_dup_corr_thresh = 0.8;
+    cfg.thresholds.T_dup_corr_thresh= 0.8;
+    cfg.kappa_std_ratio             = 1;
+    cfg.adaptive_kappa              = 2;
 
     % ---------- run & save ----------------------------------------------
     out = extractor(M, cfg);
@@ -39,11 +41,15 @@ for f = files'
     fprintf('Finished %s → %s\n', f.name, saveFile);
 
     if savePlots
-        figure('Visible', 'off');
+        fig = figure( ...
+            'Visible','off', ...
+            'Units','pixels', ...
+            'Position',[100 100 1600 1600] ...
+            );
         plot_output_cellmap(out, 0);
         pngFile = fullfile(saveDir, planeStr + "_masks.png");
-        saveas(gcf, pngFile);
-        close;
+        exportgraphics(fig, pngFile, 'Resolution', 600);     % 600 dpi PNG
+        close(fig);
     end
 end
 end
