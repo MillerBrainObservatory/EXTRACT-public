@@ -1,11 +1,12 @@
-# LBM-EXTRACT
+# LBM-EXTRACT-MATLAB Pipeline
 
 EXTRACT Processing Pipeline for Miller Brain Observatory datasets.
 
-See the [mbo user guide]() for a walkthrough on processing MBO datasets.
+See the [mbo demo](https://github.com/MillerBrainObservatory/EXTRACT-public/tree/master/mbo_demo) for a walkthrough on processing MBO datasets.
+
+[![Single ROI Processing](./docs/_images/cellfinding.png)]
 
 [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=schnitzer-lab/EXTRACT-public)  [![View EXTRACT-public on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/96083-extract-public)
-# EXTRACT 
 
 ## Introduction
 
