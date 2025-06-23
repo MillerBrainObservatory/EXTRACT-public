@@ -1,8 +1,4 @@
-# Miller Brain Observatory: EXTRACT Pipeline
-
-
-
-# MBO Utilities – EXTRACT Demo Pipeline
+# Miller Brain Observatory: EXTRACT Pipeline Demo
 
 This demo shows how to use the MBO Utilities pipeline to run EXTRACT on multi-plane imaging data.
 It assumes your data is stored in HDF5 format, with each z-plane saved separately.
@@ -29,10 +25,36 @@ D:/tests/data/EXTRACT/
 
 ## Running the Pipeline
 
+### Prep data
+
+EXTRACT takes planar timeseries in `.h5` format as input.
+
+The easiest way to get raw scanimage `.tif` into this format is using [mbo_utilities](https://millerbrainobservatory.github.io/mbo_utilities/install.html). 
+This requires python, though its a simple installation and is well documented (see the [user-guide](https://millerbrainobservatory.github.io/mbo_utilities/assembly.html) on converting tiffs using these python utilities))
+
+``` python
+# Option 1: Stitch the roi's before saving
+import mbo_utilities as mbo
+volume = mbo.imread(r"path/to/raw_tiffs")
+volume.shape
+Out[4]: (5632, 14, 448, 448)
+mbo.imwrite(volume, "D://extract_demo//stitched_rois", planes=[4, 7, 11, 14], ext="h5")
+# Option 1: Save individual rois (will save every plane in an roiN folder)
+volume.roi = 2
+volume.shape
+Out[7]: (5632, 14, 448, 224)
+mbo.imwrite(volume, "D://extract_demo", planes=[4, 7, 11, 14], ext="h5")
+```
+
+![image](../docs/_images/demo1.png)
+![image](../docs/_images/demo2.png)
+
+### Run Extract
+
 Open `runEXTRACT.m` and set the path to your data folder:
 
 ```matlab
-data_path = "D:\\tests\\data\\EXTRACT";
+data_path = "D://extract_demo//";
 runEXTRACT(data_path);
 ```
 
@@ -46,8 +68,6 @@ Use double backslashes (`\\`) on Windows.
 ## Output
 
 Results, including demixed components and summaries, will be saved alongside your data, organized by ROI and z-plane.
-
-See the mbo_utilities [documentation](https://millerbrainobservatory.github.io/mbo_utilities) for more details.
 
 ## Figures
 
