@@ -54,28 +54,81 @@ mbo.imwrite(volume, "D://extract_demo", planes=[4, 7, 11, 14], ext="h5")
 Open `runEXTRACT.m` and set the path to your data folder:
 
 ```matlab
+% Use double backslashes (`\\`) on Windows.
 data_path = "D://extract_demo//";
 runEXTRACT(data_path);
 ```
 
-Use double backslashes (`\\`) on Windows.
+This will run each `*plane*.h5`, as long as `output` is not in it's filename (as is the case with outputs).
 
-## Key Parameters
+Note that each time you run the funtion, it will overwrite data saved in the `root` directory.
 
-- Low SNR: Increase spatial corruption threshold (up to 5.0)
-- cellfind_min_snr: Lowering this will pick up more low-SNR cells
+```markdown
+## ``runEXTRACT.m``
 
-## Output
+Runs EXTRACT on all ``plane\\*.h5`` files under a specified directory. Optionally generates PNG visualizations of extracted cell masks.
 
-Results, including demixed components and summaries, will be saved alongside your data, organized by ROI and z-plane.
+```matlab
+runEXTRACT(rootDir)
+runEXTRACT(rootDir, savePlots, cfg)
+```
 
-## Figures
+| Argument     | Type    | Description                                                  |
+|--------------|---------|--------------------------------------------------------------|
+| ``rootDir``    | string  | Root directory containing ``plane\\*.h5`` files.                 |
+| ``savePlots``  | logical | *(Optional)* If ``true``, saves PNG cell mask images (default: ``true``). |
+| ``cfg``        | struct  | *(Optional)* Partial EXTRACT config struct. Only valid fields are applied. |
 
-The output plot showing segmentation results and masks looks atypical compared to other pipelines you may have seen.
+Each ``plane\\*.h5`` file must contain a dataset at path ``/mov`` shaped ``(Y, X, T)``.
 
-There are red bright spots across the FOV.
+---
 
-- The red spots in the output masks are bright values.
-- rather than black (low intensity) -> white (high intensity)
-- the high intensity values are red.
-- this is a *red-to-gray* colormap
+### Key Config Values
+
+- ``thresholds.T_min_snr``: Increase to suppress noise (e.g., ``3.5`` → ``5.0``)  
+- ``cellfind_min_snr``: Lowering this will pick up more low-SNR cells  
+- ``use_gpu``: Set to ``0`` to disable GPU use  
+- ``adaptive_kappa``: Enables dynamic thresholding in spatial extraction
+
+
+![image](../docs/_images/)
+
+
+---
+
+### Outputs
+
+For each ``plane\\*.h5`` file:  
+- HDF5 output saved to:
+  ``outputs/planeN_outputs.h5``  
+- If ``savePlots == true``:  
+  ``outputs/planeN_masks.png``  
+
+All outputs are stored in an ``outputs/`` subdirectory next to the input file.
+
+Note: The output plot shown during cellfinding (when the algorithm is running) has a ``red to gray`` colormap, so bright values are red instead of white.
+
+---
+
+### Examples
+
+**Run with defaults:**
+```matlab
+runEXTRACT('/data/session1')
+```
+
+**Run with plotting disabled:**
+```matlab
+runEXTRACT('/data/session1', false)
+```
+
+**Run with custom config:**
+```matlab
+cfg = struct();
+cfg.cellfind_min_snr = 1.5;
+cfg.thresholds = struct();
+cfg.thresholds.T_min_snr = 4.0;
+cfg.use_gpu = 0;
+runEXTRACT('/data/session1', true, cfg)
+```
+```
