@@ -90,13 +90,18 @@ Each ``plane\\*.h5`` file must contain a dataset at path ``/mov`` shaped ``(Y, X
 - ``use_gpu``: Set to ``0`` to disable GPU use  
 - ``adaptive_kappa``: Enables dynamic thresholding in spatial extraction
 
-**average_cell_radius=7**
-![image](../docs/_images/cell_radius_7/plane4_masks.png)
-![image](../docs/_images/cell_radius_7/plane7_masks.png)
+<p><strong>Plane 4</strong></p>
+<div style="display: flex; gap: 10px;">
+  <img src="../docs/_images/cell_radius_7/plane4_masks.png" width="300"/>
+  <img src="../docs/_images/cell_radius_14/plane4_masks.png" width="300"/>
+</div>
 
-**average_cell_radius=14**
-![image](../docs/_images/cell_radius_14/plane4_masks.png)
-![image](../docs/_images/cell_radius_14/plane7_masks.png)
+<p><strong>Plane 7</strong></p>
+<div style="display: flex; gap: 10px;">
+  <img src="../docs/_images/cell_radius_7/plane7_masks.png" width="300"/>
+  <img src="../docs/_images/cell_radius_14/plane7_masks.png" width="300"/>
+</div>
+
 
 ---
 
